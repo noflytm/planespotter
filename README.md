@@ -49,6 +49,47 @@ Four questions it should answer for you:
 
 *An early prototype running as a Telegram bot: the next hour of arrivals, each tagged "new aircraft" or not against the spotter's own logbook.*
 
+## Try it: the logbook (day 1)
+
+The first piece is the logbook: log what you saw and find out straight away whether the aircraft is new to you.
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
+
+.venv/bin/planespotter log sp-exe --type "Boeing 737 MAX 8" --at WAW
+# NEW aircraft: SP-EXE (Poland) - Boeing 737 MAX 8 at WAW
+
+.venv/bin/planespotter log "SP EXE" --at WMI
+# Seen before (2nd sighting): SP-EXE (Poland) - at WMI
+
+.venv/bin/planespotter seen
+# SP-EXE   Poland                 Boeing 737 MAX 8         x2  last 2026-11-03 08:15 UTC
+```
+
+The logbook lives in `~/.planespotter/logbook.db` (override with `--db` or `PLANESPOTTER_DB`). Tests: `.venv/bin/pytest`.
+
+```mermaid
+sequenceDiagram
+    actor S as Spotter
+    participant C as CLI
+    participant R as Registration parser
+    participant L as Logbook (SQLite)
+    S->>C: log "sp exe" --at WAW
+    C->>R: normalise
+    R-->>C: SP-EXE, Poland
+    C->>L: log(SP-EXE, WAW, now)
+    Note over L: one transaction: count earlier sightings, then insert
+    L-->>C: new aircraft? sighting count
+    C-->>S: NEW aircraft: SP-EXE (Poland) ...
+```
+
+Behaviour worth knowing:
+
+- Spellings like `sp exe`, `SPEXE` and `SP-EXE` are the same aircraft.
+- The same aircraft at the same place in the same minute is a duplicate and is rejected.
+- Times are stored in UTC; a time without an offset, or in the future, is rejected.
+- Registrations are checked for format only. It does not look them up in a registry.
+
 ## Roadmap
 
 ```mermaid
