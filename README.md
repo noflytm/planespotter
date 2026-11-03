@@ -2,6 +2,10 @@
 
 **One place for everything a plane spotter has to juggle: where to stand, whether you're allowed to be there, what's coming in, and which aircraft you still need.**
 
+![N117TE, a Bombardier business jet in a custom Earth-and-Moon livery, on approach](docs/images/n117te.jpg)
+
+*N117TE on approach. Photo by the project author, all rights reserved (the MIT license covers the code, not the photos).*
+
 > Status: day 1 of a 30-day build ([Build a Software Factory in 30 Days](https://github.com/orgs/qodo-hackathon/discussions/2)).
 > This repo starts with the idea. Code lands one small, reviewed pull request at a time.
 
