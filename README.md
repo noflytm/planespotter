@@ -1,4 +1,4 @@
-# PlaneSpotter
+# goSpot
 
 **One place for everything a plane spotter has to juggle: where to stand, whether you're allowed to be there, what's coming in, and which aircraft you still need.**
 
@@ -25,7 +25,7 @@ A spotting session means switching between all of them, often on a phone, often 
 
 ## The idea
 
-PlaneSpotter puts the whole session in one flow:
+goSpot puts the whole session in one flow:
 
 ```mermaid
 flowchart LR
