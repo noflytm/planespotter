@@ -1,4 +1,4 @@
-"""Command line interface: ``planespotter log | seen``."""
+"""Command line interface: ``gospot log | seen``."""
 
 import argparse
 import os
@@ -7,12 +7,12 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from planespotter.logbook import DuplicateSighting, Logbook
-from planespotter.registration import InvalidRegistration
+from gospot.logbook import DuplicateSighting, Logbook
+from gospot.registration import InvalidRegistration
 
 
 def _default_db() -> Path:
-    return Path(os.environ.get("PLANESPOTTER_DB", Path.home() / ".planespotter" / "logbook.db"))
+    return Path(os.environ.get("GOSPOT_DB", Path.home() / ".gospot" / "logbook.db"))
 
 
 def _parse_when(value: str) -> datetime:
@@ -31,8 +31,8 @@ def _ordinal(n: int) -> str:
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="planespotter", description="A spotter's logbook.")
-    parser.add_argument("--db", type=Path, default=None, help="logbook file (default: ~/.planespotter/logbook.db)")
+    parser = argparse.ArgumentParser(prog="gospot", description="A spotter's logbook.")
+    parser.add_argument("--db", type=Path, default=None, help="logbook file (default: ~/.gospot/logbook.db)")
     sub = parser.add_subparsers(dest="command", required=True)
 
     log = sub.add_parser("log", help="log a sighting and see if the aircraft is new to you")

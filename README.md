@@ -63,17 +63,17 @@ The first piece is the logbook: log what you saw and find out straight away whet
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
-.venv/bin/planespotter log sp-exe --type "Boeing 737 MAX 8" --at WAW
+.venv/bin/gospot log sp-exe --type "Boeing 737 MAX 8" --at WAW
 # NEW aircraft: SP-EXE (Poland) - Boeing 737 MAX 8 at WAW
 
-.venv/bin/planespotter log "SP EXE" --at WMI
+.venv/bin/gospot log "SP EXE" --at WMI
 # Seen before (2nd sighting): SP-EXE (Poland) at WMI
 
-.venv/bin/planespotter seen
+.venv/bin/gospot seen
 # SP-EXE   Poland                 Boeing 737 MAX 8         x2  last 2026-11-03 08:15 UTC
 ```
 
-The logbook lives in `~/.planespotter/logbook.db` (override with `--db` or `PLANESPOTTER_DB`). Tests: `.venv/bin/pytest`.
+The logbook lives in `~/.gospot/logbook.db` (override with `--db` or `GOSPOT_DB`). Tests: `.venv/bin/pytest`.
 
 ```mermaid
 sequenceDiagram

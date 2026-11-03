@@ -1,6 +1,6 @@
 import pytest
 
-from planespotter import InvalidRegistration, parse_registration
+from gospot import InvalidRegistration, parse_registration
 
 
 @pytest.mark.parametrize(

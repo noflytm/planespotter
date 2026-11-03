@@ -1,6 +1,6 @@
 import io
 
-from planespotter.cli import main
+from gospot.cli import main
 
 
 def run(db, *argv):

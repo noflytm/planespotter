@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from planespotter import DuplicateSighting, InvalidRegistration, Logbook
+from gospot import DuplicateSighting, InvalidRegistration, Logbook
 
 NOW = datetime(2026, 11, 3, 18, 0, tzinfo=timezone.utc)
 

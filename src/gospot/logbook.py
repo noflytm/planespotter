@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from planespotter.registration import parse_registration
+from gospot.registration import parse_registration
 
 _CLOCK_SKEW = timedelta(minutes=5)
 
