@@ -56,6 +56,48 @@ Four questions it should answer for you:
 
 *Early prototype, a Telegram bot and its web view: pick an airport, see the next hour of arrivals, and each aircraft is flagged "new" or "already in my logbook". The interface is localised (RU/EN/PL); the screenshots are from my own test session.*
 
+## Try it: the logbook (day 1)
+
+The first piece is the logbook: log what you saw and find out straight away whether the aircraft is new to you.
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
+
+.venv/bin/gospot log sp-exe --type "Boeing 737 MAX 8" --at WAW
+# NEW aircraft: SP-EXE (Poland) - Boeing 737 MAX 8 at WAW
+
+.venv/bin/gospot log "SP EXE" --at WMI
+# Seen before (2nd sighting): SP-EXE (Poland) at WMI
+
+.venv/bin/gospot seen
+# SP-EXE   Poland                 Boeing 737 MAX 8         x2  last 2026-11-03 08:15 UTC
+```
+
+The logbook lives in `~/.gospot/logbook.db` (override with `--db` or `GOSPOT_DB`). Tests: `.venv/bin/pytest`.
+
+```mermaid
+sequenceDiagram
+    actor S as Spotter
+    participant C as CLI
+    participant R as Registration parser
+    participant L as Logbook (SQLite)
+    S->>C: log "sp exe" --at WAW
+    C->>R: normalise
+    R-->>C: SP-EXE, Poland
+    C->>L: log(SP-EXE, WAW, now)
+    Note over L: one transaction: count earlier sightings, then insert
+    L-->>C: new aircraft? sighting count
+    C-->>S: NEW aircraft: SP-EXE (Poland) ...
+```
+
+Behaviour worth knowing:
+
+- Spellings like `sp exe`, `SPEXE` and `SP-EXE` are the same aircraft.
+- The same aircraft at the same place in the same minute is a duplicate and is rejected.
+- Times are stored in UTC. A time without an offset is rejected, and so is one more than five minutes in the future (the small allowance covers clock drift on phones).
+- The logbook file is created readable by you only (`0600`), because it records where and when you spot.
+- Registrations are checked for format only. It does not look them up in a registry.
+
 ## Roadmap
 
 ```mermaid
