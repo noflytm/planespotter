@@ -6,8 +6,7 @@
 
 *N117TE on approach. Photo by the project author, all rights reserved (the MIT license covers the code, not the photos).*
 
-> Status: day 1 of a 30-day build ([Build a Software Factory in 30 Days](https://github.com/orgs/qodo-hackathon/discussions/2)).
-> This repo starts with the idea. Code lands one small, reviewed pull request at a time.
+
 
 ## Why
 
