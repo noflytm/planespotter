@@ -1,5 +1,6 @@
 """A spotter's logbook: record sightings, know which aircraft are new to you."""
 
+import os
 import sqlite3
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -58,10 +59,23 @@ def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def _create_private(path: Path) -> None:
+    """Make sure the logbook file exists and only its owner can read it.
+
+    SQLite gives its journal files the same mode as the database file, so securing
+    the file covers those too. An existing file is tightened rather than trusted.
+    """
+    os.close(os.open(path, os.O_CREAT | os.O_RDWR, 0o600))
+    os.chmod(path, 0o600)
+
+
 class Logbook:
     def __init__(self, path: str | Path = ":memory:", *, clock: Callable[[], datetime] = _utc_now):
         if str(path) != ":memory:":
-            Path(path).parent.mkdir(parents=True, exist_ok=True)
+            path = Path(path)
+            # Only a directory created here gets 0700; one that already exists is not ours to change.
+            path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            _create_private(path)
         self._clock = clock
         # Autocommit; transactions are opened explicitly where atomicity matters.
         self._conn = sqlite3.connect(str(path), isolation_level=None)

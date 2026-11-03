@@ -1,3 +1,5 @@
+import os
+import stat
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -97,3 +99,41 @@ def test_logbook_persists_to_disk(tmp_path):
     second = Logbook(path, clock=lambda: NOW)
     assert not second.log("SP-EXE").is_new
     second.close()
+
+
+def test_small_clock_drift_is_allowed_but_not_more(book):
+    assert book.log("SP-EXE", spotted_at=NOW + timedelta(minutes=4)).is_new
+    with pytest.raises(ValueError, match="future"):
+        book.log("SP-LMG", spotted_at=NOW + timedelta(minutes=6))
+
+
+posix_only = pytest.mark.skipif(os.name != "posix", reason="POSIX file modes")
+
+
+def _mode(path):
+    return stat.S_IMODE(path.stat().st_mode)
+
+
+@posix_only
+def test_new_logbook_is_private_to_the_owner(tmp_path):
+    old_umask = os.umask(0o022)
+    try:
+        path = tmp_path / "fresh" / "logbook.db"
+        book = Logbook(path, clock=lambda: NOW)
+        book.log("SP-EXE", spotted_at=NOW - timedelta(days=1))
+        book.close()
+    finally:
+        os.umask(old_umask)
+    assert _mode(path) == 0o600
+    assert _mode(path.parent) == 0o700
+
+
+@posix_only
+def test_existing_logbook_is_tightened_but_its_directory_is_left_alone(tmp_path):
+    path = tmp_path / "logbook.db"
+    path.touch()
+    path.chmod(0o644)
+    before = _mode(tmp_path)
+    Logbook(path, clock=lambda: NOW).close()
+    assert _mode(path) == 0o600
+    assert _mode(tmp_path) == before

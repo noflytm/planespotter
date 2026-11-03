@@ -41,3 +41,19 @@ def test_duplicate_exits_2(tmp_path):
     code, _, err = run(db, "log", "SP-EXE", "--at", "WAW", "--when", "2026-11-02T17:08Z")
     assert code == 2
     assert "already logged" in err
+
+
+def test_unusable_db_path_is_a_clean_error_not_a_traceback(tmp_path):
+    blocker = tmp_path / "afile"
+    blocker.write_text("not a directory")
+    code, out, err = run(blocker / "logbook.db", "seen")
+    assert code == 2
+    assert out == ""
+    assert err.startswith("error:")
+    assert "Traceback" not in err
+
+
+def test_db_path_that_is_a_directory_is_a_clean_error(tmp_path):
+    code, _, err = run(tmp_path, "seen")
+    assert code == 2
+    assert err.startswith("error:")

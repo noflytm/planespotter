@@ -95,7 +95,8 @@ Behaviour worth knowing:
 
 - Spellings like `sp exe`, `SPEXE` and `SP-EXE` are the same aircraft.
 - The same aircraft at the same place in the same minute is a duplicate and is rejected.
-- Times are stored in UTC; a time without an offset, or in the future, is rejected.
+- Times are stored in UTC. A time without an offset is rejected, and so is one more than five minutes in the future (the small allowance covers clock drift on phones).
+- The logbook file is created readable by you only (`0600`), because it records where and when you spot.
 - Registrations are checked for format only. It does not look them up in a registry.
 
 ## Roadmap

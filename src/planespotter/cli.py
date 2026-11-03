@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import sqlite3
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -48,8 +49,9 @@ def main(argv: list[str] | None = None, *, out=None, err=None) -> int:
     out = out or sys.stdout
     err = err or sys.stderr
     args = _build_parser().parse_args(argv)
-    book = Logbook(args.db or _default_db())
+    book = None
     try:
+        book = Logbook(args.db or _default_db())
         if args.command == "log":
             result = book.log(
                 args.registration,
@@ -68,11 +70,12 @@ def main(argv: list[str] | None = None, *, out=None, err=None) -> int:
                     f"x{row.times_seen}  last {row.last_seen:%Y-%m-%d %H:%M} UTC",
                     file=out,
                 )
-    except (InvalidRegistration, DuplicateSighting, ValueError) as exc:
+    except (InvalidRegistration, DuplicateSighting, ValueError, OSError, sqlite3.Error) as exc:
         print(f"error: {exc}", file=err)
         return 2
     finally:
-        book.close()
+        if book is not None:
+            book.close()
     return 0
 
 
