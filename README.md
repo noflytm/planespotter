@@ -49,9 +49,13 @@ Four questions it should answer for you:
 | **What's coming?** | Which aircraft will pass over the next hour, and from where? |
 | **What do I still need?** | Which of them are new to *my* logbook, and which I already have? |
 
-![Spotting plan: the next hour's arrivals, with new aircraft flagged](docs/images/spotting-plan.png)
+<p align="center">
+  <img src="docs/images/bot-telegram-plan.png" alt="Telegram bot: pick an airport, get the next hour's arrivals marked new or already in the logbook" width="320">
+  &nbsp;&nbsp;
+  <img src="docs/images/bot-web-plan.png" alt="Web view: one-hour spotting plan for Warsaw with new aircraft flagged" width="320">
+</p>
 
-*An early prototype running as a Telegram bot: the next hour of arrivals, each tagged "new aircraft" or not against the spotter's own logbook.*
+*Early prototype, a Telegram bot and its web view: pick an airport, see the next hour of arrivals, and each aircraft is flagged "new" or "already in my logbook". The interface is localised (RU/EN/PL); the screenshots are from my own test session.*
 
 ## Roadmap
 
