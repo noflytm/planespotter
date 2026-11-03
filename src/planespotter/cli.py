@@ -58,9 +58,9 @@ def main(argv: list[str] | None = None, *, out=None, err=None) -> int:
                 spotted_at=args.when,
             )
             s = result.sighting
-            detail = " ".join(part for part in (s.aircraft_type, f"at {s.location}" if s.location else "") if part)
+            detail = (f" - {s.aircraft_type}" if s.aircraft_type else "") + (f" at {s.location}" if s.location else "")
             label = "NEW aircraft" if result.is_new else f"Seen before ({_ordinal(result.times_seen)} sighting)"
-            print(f"{label}: {s.registration} ({s.country}){' - ' + detail if detail else ''}", file=out)
+            print(f"{label}: {s.registration} ({s.country}){detail}", file=out)
         else:
             for row in book.seen():
                 print(

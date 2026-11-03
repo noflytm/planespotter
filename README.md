@@ -68,7 +68,7 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 # NEW aircraft: SP-EXE (Poland) - Boeing 737 MAX 8 at WAW
 
 .venv/bin/planespotter log "SP EXE" --at WMI
-# Seen before (2nd sighting): SP-EXE (Poland) - at WMI
+# Seen before (2nd sighting): SP-EXE (Poland) at WMI
 
 .venv/bin/planespotter seen
 # SP-EXE   Poland                 Boeing 737 MAX 8         x2  last 2026-11-03 08:15 UTC

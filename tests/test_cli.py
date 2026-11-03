@@ -17,7 +17,7 @@ def test_log_reports_new_then_seen_before(tmp_path):
 
     code, out, _ = run(db, "log", "SP-EXE", "--at", "WMI", "--when", "2026-11-02T20:00Z")
     assert code == 0
-    assert out.startswith("Seen before (2nd sighting): SP-EXE")
+    assert out.strip() == "Seen before (2nd sighting): SP-EXE (Poland) at WMI"
 
 
 def test_seen_lists_the_logbook(tmp_path):
