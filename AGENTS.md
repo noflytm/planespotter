@@ -24,9 +24,9 @@ Each rule says where it applies and why it exists. The reasons come from real re
    *Applies to:* any code that accepts, stores, compares or prints an aircraft registration.
    *Why:* the canonical form (`SP-EXE`) is the logbook key. Raw text let `banana` pass as `B-ANANA`, and a Unicode `ſ` fold into `S`. Never store or compare the user's raw string.
 
-2. **Sighting data is private by default.**
-   *Applies to:* anything that creates, exports or logs the logbook: files are `0600`, new directories `0700`, nothing is sent to a third party.
-   *Why:* a logbook records where and when someone spots. Qodo found the first version readable by other local users.
+2. **Sighting data is private by default; sharing is the spotter's own choice.**
+   *Applies to:* anything that creates, exports, logs or sends the logbook. Local files are `0600` and new directories `0700`. Data leaves the machine only through a channel the spotter picked themselves (for example their own Telegram chat or a share link) and only after an explicit action by them, such as pressing "share". Sharing is off by default and never silent. Analytics, logs and any third party the spotter did not choose get nothing.
+   *Why:* a logbook records where and when someone spots. Qodo found the first version readable by other local users. goSpot is for everyone, so sharing has to be possible, but only on the spotter's terms.
 
 3. **Expected failures are one-line errors, never tracebacks.**
    *Applies to:* every boundary a user touches: the CLI (`error: ...`, exit code 2) and, later, web and Telegram handlers (a short reply).
