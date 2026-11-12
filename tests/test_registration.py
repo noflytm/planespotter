@@ -37,3 +37,30 @@ def test_unprefixed_text_does_not_match_a_one_letter_prefix_by_accident():
     # "N..." must be a valid US N-number, not any word starting with N.
     with pytest.raises(InvalidRegistration):
         parse_registration("NOTAPLANE")
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "ſp-exe",  # long s upper-cases to S
+        "ſpexe",
+        "ıb-abc",  # dotless i upper-cases to I
+        "spß",  # sharp s upper-cases to SS
+        "ＳＰ-ＥＸＥ",  # full-width letters
+        "sp-exé",
+    ],
+)
+def test_rejects_non_ascii_before_case_folding(text):
+    with pytest.raises(InvalidRegistration):
+        parse_registration(text)
+
+
+def test_lowercase_ascii_is_still_accepted():
+    assert parse_registration("sp-exe").code == "SP-EXE"
+    assert parse_registration("spexe").code == "SP-EXE"
+
+
+def test_error_message_does_not_echo_control_characters():
+    with pytest.raises(InvalidRegistration) as excinfo:
+        parse_registration("\x1b[31mSP-EXE")
+    assert "\x1b" not in str(excinfo.value)
