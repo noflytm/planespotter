@@ -48,6 +48,8 @@ def test_unprefixed_text_does_not_match_a_one_letter_prefix_by_accident():
         "spß",  # sharp s upper-cases to SS
         "ＳＰ-ＥＸＥ",  # full-width letters
         "sp-exé",
+        "\u00a0sp-exe\u2003",  # no-break space and em space around a valid registration
+        "sp-exe\u200b",  # zero-width space
     ],
 )
 def test_rejects_non_ascii_before_case_folding(text):
