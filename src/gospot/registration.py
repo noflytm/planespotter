@@ -83,7 +83,12 @@ class Registration:
 
 def parse_registration(text: str) -> Registration:
     """Return the canonical registration (e.g. ``SP-EXE``) and its country."""
-    upper = (text or "").strip().upper()
+    text = text or ""
+    # Check for ASCII before stripping or changing case: str.strip() also removes Unicode
+    # whitespace (no-break space, em space) and a few letters (ſ, ı) upper-case into ASCII.
+    if not text.isascii():
+        raise InvalidRegistration(f"not a valid registration: {text!r}")
+    upper = text.strip().upper()
     if not _ALLOWED_CHARS.fullmatch(upper):
         raise InvalidRegistration(f"not a valid registration: {text!r}")
 
